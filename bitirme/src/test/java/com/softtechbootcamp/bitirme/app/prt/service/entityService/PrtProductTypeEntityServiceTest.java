@@ -42,12 +42,10 @@ class PrtProductTypeEntityServiceTest {
 
         assertEquals(expectedResult, result);
         assertNotNull(result);
-
     }
 
     @Test
     void shouldNotFindProductDetailWhenProductTypeIdIsNotExist() {
-
         Long nonExistProductTypeId = 1L;
 
         EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
@@ -59,7 +57,6 @@ class PrtProductTypeEntityServiceTest {
         assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
         assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
         assertNotNull(result);
-
     }
 
     private PrtProductTypeDetailDto createDummyPrtProductTypeDetailDto(){
@@ -93,8 +90,6 @@ class PrtProductTypeEntityServiceTest {
             public Long getProductTypeCount() {
                 return 1L;
             }
-
-
         };
         return prtProductTypeDetailDto;
     }
