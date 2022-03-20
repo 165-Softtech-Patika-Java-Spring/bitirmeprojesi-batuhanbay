@@ -1,11 +1,18 @@
 package com.softtechbootcamp.bitirme.app.prd.service;
 
+import com.softtechbootcamp.bitirme.app.gen.enums.GeneralErrorMessage;
+import com.softtechbootcamp.bitirme.app.gen.exceptions.BusinessExceptions;
+import com.softtechbootcamp.bitirme.app.gen.exceptions.DuplicateEntityExceptions;
+import com.softtechbootcamp.bitirme.app.gen.exceptions.EntityNotFoundExceptions;
+import com.softtechbootcamp.bitirme.app.gen.exceptions.NotAcceptableExceptions;
 import com.softtechbootcamp.bitirme.app.prd.dto.PrdProductDto;
 import com.softtechbootcamp.bitirme.app.prd.dto.PrdProductResponseDto;
 import com.softtechbootcamp.bitirme.app.prd.entity.PrdProduct;
+import com.softtechbootcamp.bitirme.app.prd.enums.PrdProductErrorMessage;
 import com.softtechbootcamp.bitirme.app.prd.service.entityService.PrdProductEntityService;
 import com.softtechbootcamp.bitirme.app.prt.dto.PrtProductTypeResponseDto;
 import com.softtechbootcamp.bitirme.app.prt.entity.PrtProductType;
+import com.softtechbootcamp.bitirme.app.prt.enums.PrtProductTypeErrorMessage;
 import com.softtechbootcamp.bitirme.app.prt.enums.PrtProductTypeName;
 import com.softtechbootcamp.bitirme.app.prt.service.PrtProductTypeService;
 import com.softtechbootcamp.bitirme.app.prt.service.entityService.PrtProductTypeEntityService;
@@ -54,6 +61,21 @@ class PrdProductServiceTest {
     }
 
     @Test
+    void shouldNotFindAllWhenPrdProductIsNotExist() {
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITIES_NOT_FOUND);
+
+        when(prdProductEntityService.findAllWithControl()).thenThrow(expectedException);
+
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.findAll());
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
     void shouldFindAllByProductTypeIdWhenPrdProductIdIsExist() {
         Long existPrdProductId = 1L;
         List<PrdProduct> prdProductList = createDummyPrdProductList();
@@ -69,21 +91,103 @@ class PrdProductServiceTest {
     }
 
     @Test
+    void shouldNotFindAllByProductTypeIdWhenPrdProductIdIsNotExist() {
+        Long nonExistProductTypeId = 1L;
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
+
+        when(prtProductTypeEntityService.existsByIdWithControl(nonExistProductTypeId)).thenThrow(expectedException);
+
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.findAllByProductTypeId(nonExistProductTypeId));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
     void shouldFindAllBetweenMinAndMaxPriceWhenPrdProductExistBetweenMinAndMaxPrice() {
         BigDecimal minPrice = BigDecimal.ONE;
         BigDecimal maxPrice = BigDecimal.valueOf(2000);
         List<PrdProduct> prdProductList = createDummyPrdProductList();
         List<PrdProductResponseDto> expectedResult = createDummyPrdProductResponseDtoList();
 
-
         when(prdProductEntityService.findAllByInitialPriceBetweenMinPriceAndMaxPriceWithControl(minPrice,maxPrice)).thenReturn(prdProductList);
-
 
         List<PrdProductResponseDto> result = prdProductService.findAllBetweenMinAndMaxPrice(minPrice,maxPrice);
 
         assertEquals(expectedResult, result);
         assertNotNull(result);
+    }
 
+    @Test
+    void shouldNotFindAllBetweenMinAndMaxPriceWhenPrdProductIsNotExistBetweenMinAndMaxPrice() {
+        BigDecimal minPrice = BigDecimal.ONE;
+        BigDecimal maxPrice = BigDecimal.valueOf(2000);
+
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(PrdProductErrorMessage.NOT_FOUND_PRODUCT_LIST_BETWEEN_MIN_AND_MAX_PRICE);
+
+        when(prdProductEntityService.findAllByInitialPriceBetweenMinPriceAndMaxPriceWithControl(minPrice,maxPrice)).thenThrow(expectedException);
+
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.findAllBetweenMinAndMaxPrice(minPrice, maxPrice));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotFindAllBetweenMinAndMaxPriceWhenMinPriceIsLessThanZero() {
+        BigDecimal minPrice = BigDecimal.valueOf(-1);
+        BigDecimal maxPrice = BigDecimal.valueOf(2000);
+
+        NotAcceptableExceptions expectedException = new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MIN_PRICE_MUST_BE_GREATER_THAN_ZERO);
+
+        doThrow(new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MIN_PRICE_MUST_BE_GREATER_THAN_ZERO)).when(prdProductEntityService).checkMinPriceAndMaxPriceIsValid(minPrice,maxPrice);
+        NotAcceptableExceptions result = assertThrows(NotAcceptableExceptions.class, () -> prdProductService.findAllBetweenMinAndMaxPrice(minPrice, maxPrice));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotFindAllBetweenMinAndMaxPriceWhenMaxPriceIsLessThanZero() {
+        BigDecimal minPrice = BigDecimal.valueOf(1);
+        BigDecimal maxPrice = BigDecimal.valueOf(-2000);
+
+        NotAcceptableExceptions expectedException = new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MAX_PRICE_MUST_BE_GREATER_THAN_ZERO);
+
+        doThrow(new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MAX_PRICE_MUST_BE_GREATER_THAN_ZERO)).when(prdProductEntityService).checkMinPriceAndMaxPriceIsValid(minPrice,maxPrice);
+        NotAcceptableExceptions result = assertThrows(NotAcceptableExceptions.class, () -> prdProductService.findAllBetweenMinAndMaxPrice(minPrice, maxPrice));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotFindAllBetweenMinAndMaxPriceWhenMaxPriceIsLessThanMinPrice() {
+        BigDecimal minPrice = BigDecimal.valueOf(2000);
+        BigDecimal maxPrice = BigDecimal.valueOf(1000);
+
+        NotAcceptableExceptions expectedException = new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MAX_PRICE_MUST_BE_GREATER_THAN_MIN_PRICE);
+
+        doThrow(new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_MAX_PRICE_MUST_BE_GREATER_THAN_MIN_PRICE)).when(prdProductEntityService).checkMinPriceAndMaxPriceIsValid(minPrice,maxPrice);
+        NotAcceptableExceptions result = assertThrows(NotAcceptableExceptions.class, () -> prdProductService.findAllBetweenMinAndMaxPrice(minPrice, maxPrice));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
     }
 
     @Test
@@ -100,6 +204,76 @@ class PrdProductServiceTest {
         PrdProductResponseDto result = prdProductService.save(prdProductDto);
 
         assertEquals(expectedResult, result);
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotSaveWhenPrdProductDtoNameIsExistWithSameProductType() {
+        String existProductName = "Test";
+        Long existProductTypeId = 1L;
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+        DuplicateEntityExceptions expectedException = new DuplicateEntityExceptions(PrdProductErrorMessage.HAS_DUPLICATE_PRODUCT_NAME_IN_PRODUCT_TYPE);
+
+        doThrow(new DuplicateEntityExceptions(PrdProductErrorMessage.HAS_DUPLICATE_PRODUCT_NAME_IN_PRODUCT_TYPE)).when(prdProductEntityService).checkExistByNameAndProductTypeId(existProductName,existProductTypeId);
+
+        DuplicateEntityExceptions result = assertThrows(DuplicateEntityExceptions.class, () -> prdProductService.save(prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotSaveWhenPrtProductTypeIdIsNotExist() {
+        Long nonExistProductTypeId = 1L;
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
+
+        when(prtProductTypeEntityService.findByIdWithControl(nonExistProductTypeId)).thenThrow(new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND));
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.save(prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotSaveWhenPrdProductInitialPriceIsLessThanZero() {
+        BigDecimal initialPrice = BigDecimal.valueOf(-5000);
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+        prdProductDto.setInitialPrice(initialPrice);
+        PrtProductType prtProductType = createDummyPrtProductType();
+        NotAcceptableExceptions expectedException = new NotAcceptableExceptions(PrdProductErrorMessage.PRODUCT_INITIAL_PRICE_MUST_BE_GREATER_THAN_ZERO);
+
+        when(prtProductTypeEntityService.findByIdWithControl(anyLong())).thenReturn(prtProductType);
+        NotAcceptableExceptions result = assertThrows(NotAcceptableExceptions.class, () -> prdProductService.save(prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotSaveWhenPrtProductTypeKdvIsLessThanZero() {
+        BigDecimal kdv = BigDecimal.valueOf(-5);
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+        PrtProductType prtProductType = createDummyPrtProductType();
+        prtProductType.setKdv(kdv);
+        NotAcceptableExceptions expectedException = new NotAcceptableExceptions(PrtProductTypeErrorMessage.PRODUCT_TYPE_KDV_CAN_NOT_LESS_THAN_ZERO);
+
+        when(prtProductTypeEntityService.findByIdWithControl(anyLong())).thenReturn(prtProductType);
+        NotAcceptableExceptions result = assertThrows(NotAcceptableExceptions.class, () -> prdProductService.save(prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
         assertNotNull(result);
     }
 
@@ -142,6 +316,41 @@ class PrdProductServiceTest {
     }
 
     @Test
+    void shouldNotUpdateWhenPrdProductIdIsNotExist() {
+        Long nonExistPrdProductId = 1L;
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
+
+        when(prdProductEntityService.findByIdWithControl(nonExistPrdProductId)).thenThrow(new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND));
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.update(nonExistPrdProductId,prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldNotUpdateWhenPrtProductTypeIdIsNotExist() {
+        Long existPrdProductId = 1L;
+        Long nonExistPrdProductTypeId = 1L;
+        PrdProductDto prdProductDto = createDummyTestPrdProductDto();
+
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
+
+        when(prtProductTypeEntityService.findByIdWithControl(nonExistPrdProductTypeId)).thenThrow(new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND));
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductService.update(existPrdProductId,prdProductDto));
+
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
+    }
+
+    @Test
     void shouldBatchUpdateWhenPrdProductsHasProductTypeId() {
         Long existProductTypeId = 1L;
         PrtProductType prtProductType = createDummyPrtProductType();
@@ -160,6 +369,21 @@ class PrdProductServiceTest {
         doNothing().when(prdProductEntityService).deleteByIdWithControl(anyLong());
         prdProductService.delete(anyLong());
         verify(prdProductEntityService).deleteByIdWithControl(anyLong());
+    }
+
+    @Test
+    void shouldNotDeleteWhenPrdProductIdIsExist() {
+        EntityNotFoundExceptions expectedException = new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND);
+        doThrow(new EntityNotFoundExceptions(GeneralErrorMessage.ENTITY_NOT_FOUND)).when(prdProductEntityService).deleteByIdWithControl(anyLong());
+
+        EntityNotFoundExceptions result = assertThrows(EntityNotFoundExceptions.class, () -> prdProductEntityService.deleteByIdWithControl(anyLong()));
+
+        verify(prdProductEntityService).deleteByIdWithControl(anyLong());
+        assertEquals(expectedException, result);
+        assertEquals(expectedException.getBaseErrorMessage().getMessage(), result.getBaseErrorMessage().getMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getDetailMessage(), result.getBaseErrorMessage().getDetailMessage());
+        assertEquals(expectedException.getBaseErrorMessage().getErrorCode(), result.getBaseErrorMessage().getErrorCode());
+        assertNotNull(result);
     }
 
     private PrdProduct createDummyTestPrdProduct(){
