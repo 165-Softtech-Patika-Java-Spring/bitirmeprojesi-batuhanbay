@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOGS" value="./logs" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1} - %m%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ROLLING-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/softtech_bitirme_logger.log
+		</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{dd-MM-yyyy HH:mm:ss.SSS}[%thread]%-5level%logger{18}.%M - %msg%n
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/archive/softtech_bitirme_logger_%d{yyyy-MM-dd}.%i.gz
+			</fileNamePattern>
+			<maxFileSize>20MB</maxFileSize>
+			<totalSizeCap>600MB</totalSizeCap>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="REQUEST-LOG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/requests/requests.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{dd-MM-yyyy HH:mm:ss.SSS} - %msg%n
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/requests/archive/requests_%d{dd-MM-yyyy}_%i.gz
+			</fileNamePattern>
+			<maxFileSize>20MB</maxFileSize>
+			<totalSizeCap>600MB</totalSizeCap>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="STATS-LOG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/stats/stats.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{dd-MM-yyyy HH:mm:ss.SSS} - %msg%n
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/stats/archive/stats_%d{dd-MM-yyyy}_%i.gz
+			</fileNamePattern>
+			<maxFileSize>20MB</maxFileSize>
+			<totalSizeCap>600MB</totalSizeCap>
+			<maxHistory>15</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="ROLLING-FILE" />
+	</root>
+	
+	<logger name="request-log" additivity="true">
+        <level value="trace" class="package com.softtechbootcamp.bitirme.as.httpfilter.LogFilter"/>
+        <appender-ref ref="REQUEST-LOG"/>
+    </logger>
+	<logger name="stats-log" additivity="false">
+        <level value="info" class="package com.softtechbootcamp.bitirme.as.httpfilter.LogFilter"/>
+        <appender-ref ref="STATS-LOG"/>
+    </logger>
+</configuration>
