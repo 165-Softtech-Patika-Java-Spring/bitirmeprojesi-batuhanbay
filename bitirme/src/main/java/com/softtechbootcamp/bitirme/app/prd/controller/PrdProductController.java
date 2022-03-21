@@ -34,8 +34,8 @@ public class PrdProductController {
 
     @GetMapping("/between")
     public ResponseEntity<?> findAllPrdProductsBetween(
-            @Min(value = 1, message = "Anıl Akdemir") @RequestParam("minPrice") BigDecimal minPrice,
-            @Min(value = 1, message = "Batuhan") @RequestParam("maxPrice") BigDecimal maxPrice){
+           @RequestParam("minPrice") BigDecimal minPrice,
+           @RequestParam("maxPrice") BigDecimal maxPrice){
        List<PrdProductResponseDto> prdProductResponseDtoList = prdProductService.findAllBetweenMinAndMaxPrice(minPrice,maxPrice);
        return ResponseEntity.ok(GeneralResponse.of(prdProductResponseDtoList));
     }

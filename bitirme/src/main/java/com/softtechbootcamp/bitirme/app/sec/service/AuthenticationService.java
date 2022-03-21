@@ -25,9 +25,9 @@ public class AuthenticationService {
 
     public UsrUserDto register(UsrUserDto usrUserDto) {
 
-        UsrUserDto cusCustomerDto = usrUserService.save(usrUserDto);
+        UsrUserDto savedUsrUserDto = usrUserService.save(usrUserDto);
 
-        return cusCustomerDto;
+        return savedUsrUserDto;
     }
 
     public String login(SecLoginRequestDto secLoginRequestDto) {
