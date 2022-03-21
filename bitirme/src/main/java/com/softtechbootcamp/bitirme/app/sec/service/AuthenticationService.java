@@ -35,8 +35,7 @@ public class AuthenticationService {
     }
 
     public String login(SecLoginRequestDto secLoginRequestDto) {
-        String password = passwordEncoder.encode(secLoginRequestDto.getPassword());
-        if (!usrUserEntityService.isExistUsernameAndPassword(secLoginRequestDto.getUsername(), password)){
+        if (!usrUserEntityService.isExistUsername(secLoginRequestDto.getUsername())){
             throw new EntityNotFoundExceptions(UsrUserErrorMessage.USER_LOGIN_FAILED);
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(secLoginRequestDto.getUsername(), secLoginRequestDto.getPassword());

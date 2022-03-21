@@ -34,8 +34,4 @@ public class UsrUserEntityService extends BaseEntityService<UsrUser, UsrUserRepo
         return getRepository().existsByUsername(username);
     }
 
-    public boolean isExistUsernameAndPassword(String username, String password){
-        return getRepository().existsByUsernameAndPassword(username, password);
-    }
-
 }
