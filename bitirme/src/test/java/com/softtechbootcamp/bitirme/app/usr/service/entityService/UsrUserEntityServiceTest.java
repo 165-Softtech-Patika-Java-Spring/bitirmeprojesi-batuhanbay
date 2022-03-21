@@ -87,6 +87,18 @@ class UsrUserEntityServiceTest {
         assertTrue(result);
     }
 
+    @Test
+    void shouldIsExistUsernameAndPasswordWhenUsernameAndPasswordIsValid(){
+        String username = "Test";
+        String password = "password";
+
+        when(usrUserRepository.existsByUsernameAndPassword(username, password)).thenReturn(true);
+
+        boolean result = usrUserEntityService.isExistUsernameAndPassword(username, password);
+
+        assertTrue(result);
+    }
+
     private UsrUser createDummyTestUsrUser(){
         UsrUser usrUser = new UsrUser();
         usrUser.setId(1L);
