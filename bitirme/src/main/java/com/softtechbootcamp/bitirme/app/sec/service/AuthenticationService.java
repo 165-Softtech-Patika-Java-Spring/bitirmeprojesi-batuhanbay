@@ -1,11 +1,13 @@
 package com.softtechbootcamp.bitirme.app.sec.service;
 
+import com.softtechbootcamp.bitirme.app.gen.exceptions.EntityNotFoundExceptions;
 import com.softtechbootcamp.bitirme.app.sec.dto.SecLoginRequestDto;
 import com.softtechbootcamp.bitirme.app.sec.enums.EnumJwtConstant;
 import com.softtechbootcamp.bitirme.app.sec.security.JwtTokenGenerator;
 import com.softtechbootcamp.bitirme.app.sec.security.JwtUserDetails;
 import com.softtechbootcamp.bitirme.app.usr.dto.UsrUserDto;
 import com.softtechbootcamp.bitirme.app.usr.entity.UsrUser;
+import com.softtechbootcamp.bitirme.app.usr.enums.UsrUserErrorMessage;
 import com.softtechbootcamp.bitirme.app.usr.service.UsrUserService;
 import com.softtechbootcamp.bitirme.app.usr.service.entityService.UsrUserEntityService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +25,7 @@ public class AuthenticationService {
     private final UsrUserEntityService usrUserEntityService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenGenerator jwtTokenGenerator;
+    private final PasswordEncoder passwordEncoder;
 
     public UsrUserDto register(UsrUserDto usrUserDto) {
 
@@ -31,7 +35,10 @@ public class AuthenticationService {
     }
 
     public String login(SecLoginRequestDto secLoginRequestDto) {
-
+        String password = passwordEncoder.encode(secLoginRequestDto.getPassword());
+        if (!usrUserEntityService.isExistUsernameAndPassword(secLoginRequestDto.getUsername(), password)){
+            throw new EntityNotFoundExceptions(UsrUserErrorMessage.USER_LOGIN_FAILED);
+        }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(secLoginRequestDto.getUsername(), secLoginRequestDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
