@@ -34,7 +34,7 @@ public class PrdProductEntityService extends BaseEntityService<PrdProduct, PrdPr
     }
 
     public List<PrdProduct> findAllByInitialPriceBetweenMinPriceAndMaxPriceWithControl(BigDecimal minPrice, BigDecimal maxPrice){
-        List<PrdProduct> prdProductList = getRepository().findAllByInitialPriceBetween(minPrice, maxPrice);
+        List<PrdProduct> prdProductList = getRepository().findAllByLastPriceBetween(minPrice, maxPrice);
         if (prdProductList.isEmpty()){
             throw new EntityNotFoundExceptions(PrdProductErrorMessage.NOT_FOUND_PRODUCT_LIST_BETWEEN_MIN_AND_MAX_PRICE);
         }
