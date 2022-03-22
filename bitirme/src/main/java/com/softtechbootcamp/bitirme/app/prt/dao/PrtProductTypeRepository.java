@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PrtProductTypeRepository extends JpaRepository<PrtProductType, Long> {
-    boolean existsByName(PrtProductTypeName name);
 
     @Query(value = "SELECT MIN(prdProduct.last_price) as minPrice,"
             + " MAX(prdProduct.last_price) as maxPrice,"
