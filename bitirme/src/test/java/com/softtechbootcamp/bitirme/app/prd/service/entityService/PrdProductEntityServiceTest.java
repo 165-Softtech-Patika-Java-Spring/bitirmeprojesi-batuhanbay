@@ -1,14 +1,11 @@
 package com.softtechbootcamp.bitirme.app.prd.service.entityService;
 
-import com.softtechbootcamp.bitirme.app.gen.enums.GeneralErrorMessage;
 import com.softtechbootcamp.bitirme.app.gen.exceptions.DuplicateEntityExceptions;
 import com.softtechbootcamp.bitirme.app.gen.exceptions.EntityNotFoundExceptions;
 import com.softtechbootcamp.bitirme.app.gen.exceptions.NotAcceptableExceptions;
 import com.softtechbootcamp.bitirme.app.prd.dao.PrdProductRepository;
 import com.softtechbootcamp.bitirme.app.prd.entity.PrdProduct;
 import com.softtechbootcamp.bitirme.app.prd.enums.PrdProductErrorMessage;
-import com.softtechbootcamp.bitirme.app.prt.dao.PrtProductTypeRepository;
-import com.softtechbootcamp.bitirme.app.prt.service.entityService.PrtProductTypeEntityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -76,7 +73,7 @@ class PrdProductEntityServiceTest {
         BigDecimal maxPrice = BigDecimal.valueOf(1000);
         List<PrdProduct> expectedResult = createDummyTestPrdProductList();
 
-        when(prdProductRepository.findAllByInitialPriceBetween(minPrice, maxPrice)).thenReturn(expectedResult);
+        when(prdProductRepository.findAllByLastPriceBetween(minPrice, maxPrice)).thenReturn(expectedResult);
 
         List<PrdProduct> result = prdProductEntityService.findAllByInitialPriceBetweenMinPriceAndMaxPriceWithControl(minPrice, maxPrice);
 
