@@ -13,6 +13,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,8 +53,9 @@ public class ExportReportService {
 
         String fileNamePdf = stringBuilder.toString();
 
-        String patikaLogoPath = ResourceUtils.getFile("images/logo_patika.png").getAbsolutePath();
-        String softtechLogoPath = ResourceUtils.getFile("images/logo_softtech.png").getAbsolutePath();
+        String patikaLogoPath = ResourceUtils.getFile("classpath:images/logo_patika.png").getAbsolutePath();
+        String softtechLogoPath = ResourceUtils.getFile("classpath:images/logo_softtech.png").getAbsolutePath();
+
 
         if (patikaLogoPath.isEmpty() || softtechLogoPath.isEmpty()) {
             throw new BusinessExceptions(ExportReportErrorMessage.COULD_NOT_FIND_LOGO_PATH);

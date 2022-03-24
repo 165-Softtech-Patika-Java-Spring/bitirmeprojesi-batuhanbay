@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Product_Type_Detail" pageWidth="842" pageHeight="450" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b0eaa82e-c12f-4177-8fcb-470d0958473c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Softtech"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bitirmedb Data Adapter"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="238"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="751"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -14,6 +14,8 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="558"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="429"/>
 	<parameter name="product_type_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -28,7 +30,7 @@
  COUNT(prdProduct.id_product_type) as productTypeCount
  FROM prt_product_type productType
  LEFT OUTER JOIN  prd_product prdProduct ON (prdProduct.id_product_type = productType.id)
- WHERE productType.id =  $P{product_type_id} ]]>
+ WHERE productType.id =  $P{product_type_id}]]>
 	</queryString>
 	<field name="minPrice" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="minPrice"/>
@@ -86,7 +88,7 @@
 				</textElement>
 				<text><![CDATA[Product Type Detail]]></text>
 			</staticText>
-			<image>
+			<image isLazy="true">
 				<reportElement x="700" y="0" width="90" height="90" uuid="a08a1ba8-0b1f-45cb-bdfb-5a038ae01d91">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -101,7 +103,7 @@
 				</box>
 				<imageExpression><![CDATA[$P{softtech_logo_path}]]></imageExpression>
 			</image>
-			<image>
+			<image isLazy="true">
 				<reportElement x="0" y="0" width="90" height="90" uuid="469208f7-967d-4494-a911-706894c4895d">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
