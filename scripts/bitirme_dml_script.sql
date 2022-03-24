@@ -7,7 +7,7 @@ INSERT INTO `prt_product_type` (`kdv`, `name`) VALUES ('18', 'TECHNOLOGY');
 INSERT INTO `prt_product_type` (`kdv`, `name`) VALUES ('18', 'CLEANING');
 INSERT INTO `prt_product_type` (`kdv`, `name`) VALUES ('18', 'OTHERS');
 
-INSERT INTO `set_settings` (`set_settings_key`, `set_settings_value`) VALUES ('savedDirectoryPath', 'D:\\\\reports\\\\');
+INSERT INTO `set_settings` (`set_settings_key`, `set_settings_value`) VALUES ('savedDirectoryPath', 'D:\\\\jasper_reports\\\\');
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` TRIGGER `after_update_usr_user_set_log_usr_user` AFTER UPDATE ON `usr_user` FOR EACH ROW BEGIN
