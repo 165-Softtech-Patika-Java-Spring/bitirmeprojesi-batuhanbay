@@ -38,7 +38,7 @@ public class PrtProductTypeController {
     @Operation(tags = "Product Type", description = "This method find product type detail by given id", summary = "Find product type detail")
     @GetMapping ("/{id}/details")
     ResponseEntity<?> findProductDetail(
-            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "1"), required = true)
+            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "4"), required = true)
             @PathVariable("id") Long id){
         PrtProductTypeDetailDto prtProductTypeDetailDto = prtProductTypeService.findProductDetailByProductTypeId(id);
         return ResponseEntity.ok(GeneralResponse.of(prtProductTypeDetailDto));
@@ -75,7 +75,7 @@ public class PrtProductTypeController {
     @Operation(tags = "Product Type", description = "This method export product type detail pdf file as report by given id", summary = "Export pdf")
     @PostMapping("{id}/detail/pdf")
     public ResponseEntity<?> exportProductTypeDetailReport(
-            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "1"), required = true)
+            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "4"), required = true)
             @PathVariable("id") Long id) throws FileNotFoundException, SQLException {
         prtProductTypeService.exportProductTypeDetailToPdf(id);
         return ResponseEntity.ok(GeneralResponse.empty());

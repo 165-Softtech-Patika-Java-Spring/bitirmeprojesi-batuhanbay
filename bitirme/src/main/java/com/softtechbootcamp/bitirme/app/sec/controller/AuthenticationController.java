@@ -22,7 +22,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @Operation(
-            tags = "User", description = "This method make user to login", summary = "Login user",
+            tags = "Authentication", description = "This method make user to login", summary = "Login user",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = {
                             @Content(
@@ -32,7 +32,7 @@ public class AuthenticationController {
                                     ),
                                     examples = {
                                             @ExampleObject(
-                                                    value = "{\"username\": \"softtech\",\"password\": \"password\"}"
+                                                    value = "{\"username\": \"cadmin\",\"password\": \"password\"}"
                                             )
                                     }
                             ),
@@ -48,7 +48,7 @@ public class AuthenticationController {
     }
 
     @Operation(
-            tags = "User", description = "This method make user to sign up", summary = "Sign up User",
+            tags = "Authentication", description = "This method make user to sign up", summary = "Sign up User",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = {
                             @Content(

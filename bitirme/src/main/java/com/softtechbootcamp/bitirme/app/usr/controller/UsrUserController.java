@@ -43,7 +43,7 @@ public class UsrUserController {
     @Operation(tags = "User", description = "This method find user by given usuernme", summary = "Find user by username")
     @GetMapping("/by/username/{username}")
     public ResponseEntity<?> findByUsername(
-            @Parameter(name = "username", in = ParameterIn.PATH, schema = @Schema(type = "string", example  = "softtech"), required = true)
+            @Parameter(name = "username", in = ParameterIn.PATH, schema = @Schema(type = "string", example  = "cadmin"), required = true)
             @PathVariable("username") String username){
         UsrUserDto usrUserDto = usrUserService.findByUsername(username);
         return  ResponseEntity.ok(GeneralResponse.of(usrUserDto));
@@ -105,7 +105,7 @@ public class UsrUserController {
     @Operation(tags = "User", description = "This method delete user", summary = "Delete user")
     @DeleteMapping("/{id}")
     public  ResponseEntity<?> delete(
-            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "1"), required = true)
+            @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "integer", example  = "2"), required = true)
             @PathVariable("id") Long id){
         usrUserService.delete(id);
         return ResponseEntity.ok(GeneralResponse.empty());
