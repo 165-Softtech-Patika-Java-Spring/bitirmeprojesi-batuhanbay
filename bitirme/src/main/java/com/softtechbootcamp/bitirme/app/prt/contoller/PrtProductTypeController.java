@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -37,4 +39,11 @@ public class PrtProductTypeController {
         PrtProductTypeResponseDto prtProductTypeResponseDto = prtProductTypeService.update(id, prtProductTypeDto);
         return ResponseEntity.ok(GeneralResponse.of(prtProductTypeResponseDto));
     }
+
+    @PostMapping("{id}/detail/pdf")
+    public ResponseEntity<?> update(@PathVariable("id") Long id) throws FileNotFoundException, SQLException {
+        prtProductTypeService.exportProductTypeDetailToPdf(id);
+        return ResponseEntity.ok(GeneralResponse.empty());
+    }
+
 }
