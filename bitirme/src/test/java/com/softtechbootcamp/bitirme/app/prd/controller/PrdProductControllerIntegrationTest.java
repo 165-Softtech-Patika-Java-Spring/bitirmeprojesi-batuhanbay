@@ -216,7 +216,7 @@ class PrdProductControllerIntegrationTest extends BaseTest {
     @Test
     void shouldDeleteWhenPrdProductIdIsExist() throws Exception {
         MvcResult result = mockMvc.perform(
-                delete(BASE_PATH + "/1").content("1").contentType(MediaType.APPLICATION_JSON)
+                delete(BASE_PATH + "/5").content("5").contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn();
 
         boolean isSuccess = isSuccess(result);

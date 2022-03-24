@@ -54,7 +54,7 @@ class UsrUserControllerIntegrationTest extends BaseTest {
     @Test
     void shouldFindByIdWhenUsrUserIdIsExist() throws Exception {
         MvcResult result = mockMvc.perform(
-                get(BASE_PATH + "/2").content("2L").contentType(MediaType.APPLICATION_JSON)
+                get(BASE_PATH + "/7").content("7L").contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn();
 
         boolean isSuccess = isSuccess(result);
@@ -100,7 +100,7 @@ class UsrUserControllerIntegrationTest extends BaseTest {
         UsrUserDto usrUserDto = new UsrUserDto();
         usrUserDto.setName("Test");
         usrUserDto.setSurname("Test");
-        usrUserDto.setUsername("TestUsername");
+        usrUserDto.setUsername("TestUsername99");
         usrUserDto.setPassword("123456");
 
         String content = objectMapper.writeValueAsString(usrUserDto);
@@ -138,7 +138,7 @@ class UsrUserControllerIntegrationTest extends BaseTest {
         UsrUserDto usrUserDto = new UsrUserDto();
         usrUserDto.setName("Test");
         usrUserDto.setSurname("Test2");
-        usrUserDto.setUsername("TestUsername4");
+        usrUserDto.setUsername("TestUsername75");
         usrUserDto.setPassword("123456");
 
         String content = objectMapper.writeValueAsString(usrUserDto);
@@ -182,7 +182,7 @@ class UsrUserControllerIntegrationTest extends BaseTest {
         String content = objectMapper.writeValueAsString(usrUserDto);
 
         MvcResult result = mockMvc.perform(
-                put(BASE_PATH + "/4").content(content).contentType(MediaType.APPLICATION_JSON)
+                put(BASE_PATH + "/5").content(content).contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isConflict()).andReturn();
 
         boolean isSuccess = isSuccess(result);
@@ -194,7 +194,7 @@ class UsrUserControllerIntegrationTest extends BaseTest {
     void shouldDeleteWhenUsrUserIdIsExist() throws Exception {
 
         MvcResult result = mockMvc.perform(
-                delete(BASE_PATH + "/2").content("2").contentType(MediaType.APPLICATION_JSON)
+                delete(BASE_PATH + "/7").content("7").contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn();
 
         boolean isSuccess = isSuccess(result);
