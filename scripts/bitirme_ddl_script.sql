@@ -4,7 +4,7 @@ use bitirmedb;
 
 CREATE TABLE IF NOT EXISTS `usr_user`
 (
-   `id` bigint NOT NULL AUTO_INCREMENT,
+	id bigint NOT NULL AUTO_INCREMENT,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by bigint NOT NULL DEFAULT '1',
     update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `usr_user`
 
 CREATE TABLE IF NOT EXISTS `prt_product_type`
 (
-   `id` bigint NOT NULL AUTO_INCREMENT,
+	id bigint NOT NULL AUTO_INCREMENT,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by bigint NOT NULL DEFAULT '1',
     update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -29,10 +29,21 @@ CREATE TABLE IF NOT EXISTS `prt_product_type`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
+CREATE TABLE IF NOT EXISTS `set_settings` (
+  id bigint NOT NULL AUTO_INCREMENT,
+  create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by bigint NOT NULL DEFAULT '1',
+  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_by bigint NOT NULL DEFAULT '1',
+  set_settings_key varchar(255) NOT NULL,
+  set_settings_value varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key_UNIQUE` (`set_settings_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 CREATE TABLE IF NOT EXISTS `prd_product`
 (
-	`id` bigint NOT NULL AUTO_INCREMENT,
+	id bigint NOT NULL AUTO_INCREMENT,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by bigint NOT NULL DEFAULT '1',
     update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -47,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `prd_product`
 
 CREATE TABLE IF NOT EXISTS `log_usr_user`
 (
-   `id` bigint NOT NULL ,
+	id bigint NOT NULL ,
     create_date timestamp NOT NULL,
     created_by bigint NOT NULL,
     update_date timestamp NOT NULL,
@@ -60,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `log_usr_user`
 
 CREATE TABLE IF NOT EXISTS `log_prt_product_type`
 (
-    `id` bigint NOT NULL ,
+    id bigint NOT NULL ,
 	create_date timestamp NOT NULL,
     created_by bigint NOT NULL,
     update_date timestamp NOT NULL,
@@ -72,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `log_prt_product_type`
 
 CREATE TABLE IF NOT EXISTS `log_prd_product`
 (
-	`id` bigint NOT NULL ,
+	id bigint NOT NULL ,
 	create_date timestamp NOT NULL,
     created_by bigint NOT NULL,
     update_date timestamp NOT NULL,
@@ -83,3 +94,15 @@ CREATE TABLE IF NOT EXISTS `log_prd_product`
 	name varchar(255) NOT NULL,
     id_product_type bigint NOT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+CREATE TABLE IF NOT EXISTS `log_set_settings` (
+  id bigint NOT NULL,
+  create_date timestamp NOT NULL,
+  created_by bigint NOT NULL,
+  update_date timestamp NOT NULL,
+  updated_by bigint NOT NULL,
+  set_settings_key varchar(255) NOT NULL,
+  set_settings_value varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+
