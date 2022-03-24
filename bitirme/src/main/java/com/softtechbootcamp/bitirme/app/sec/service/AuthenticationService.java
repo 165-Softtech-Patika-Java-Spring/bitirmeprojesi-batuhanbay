@@ -1,6 +1,7 @@
 package com.softtechbootcamp.bitirme.app.sec.service;
 
 import com.softtechbootcamp.bitirme.app.gen.exceptions.EntityNotFoundExceptions;
+import com.softtechbootcamp.bitirme.app.prd.dto.PrdProductDto;
 import com.softtechbootcamp.bitirme.app.sec.dto.SecLoginRequestDto;
 import com.softtechbootcamp.bitirme.app.sec.enums.EnumJwtConstant;
 import com.softtechbootcamp.bitirme.app.sec.security.JwtTokenGenerator;
@@ -10,6 +11,10 @@ import com.softtechbootcamp.bitirme.app.usr.entity.UsrUser;
 import com.softtechbootcamp.bitirme.app.usr.enums.UsrUserErrorMessage;
 import com.softtechbootcamp.bitirme.app.usr.service.UsrUserService;
 import com.softtechbootcamp.bitirme.app.usr.service.entityService.UsrUserEntityService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

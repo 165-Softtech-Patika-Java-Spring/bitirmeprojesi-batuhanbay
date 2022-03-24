@@ -5,6 +5,9 @@ import com.softtechbootcamp.bitirme.app.sec.dto.SecLoginRequestDto;
 import com.softtechbootcamp.bitirme.app.sec.service.AuthenticationService;
 import com.softtechbootcamp.bitirme.app.usr.dto.UsrUserDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
-    @Operation(tags = "Authentication Controller")
+    @Operation(
+            tags = "User", description = "This method make user to login", summary = "Login user",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = SecLoginRequestDto.class
+                                    ),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = "{\"username\": \"softtech\",\"password\": \"password\"}"
+                                            )
+                                    }
+                            ),
+                    }
+            )
+    )
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody SecLoginRequestDto secLoginRequestDto){
 
@@ -27,7 +47,24 @@ public class AuthenticationController {
         return ResponseEntity.ok(GeneralResponse.of(token));
     }
 
-    @Operation(tags = "Authentication Controller")
+    @Operation(
+            tags = "User", description = "This method make user to sign up", summary = "Sign up User",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = SecLoginRequestDto.class
+                                    ),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = "{\"name\": \"Admin\",\"surname\": \"Admin\", \"username\": \"cadmin\" ,\"password\": \"password\"}"
+                                            )
+                                    }
+                            ),
+                    }
+            )
+    )
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsrUserDto usrUserDto){
 
