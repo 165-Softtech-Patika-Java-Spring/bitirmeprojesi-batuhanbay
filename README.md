@@ -47,7 +47,9 @@
   * Visit the http://localhost:8080/api/v1/swagger-ui/index.html#/ path in your browser.
   * Sign up the with new account.
   * Login with your user and get your token.
-  * Authorize with this token.
+  * Authorize with this token as shown at below.
+  
+  ![image](https://github.com/165-Softtech-Patika-Java-Spring/bitirmeprojesi-batuhanbay/blob/main/readme%20resources/Swagger%20UI%20Authorize.gif?raw=true)
 
 > **Security**
  * JWT
@@ -91,6 +93,8 @@
                             ├───resources
                                     ├───logback.xml
   ```
+     > Example of logs:
+ ![image](https://github.com/165-Softtech-Patika-Java-Spring/bitirmeprojesi-batuhanbay/blob/main/readme%20resources/Log%20Example.jpg?raw=true)
 
 *  __**Log tables**__ were created for user, product, product types and settings tables in the database. Scripts are in the bitirme_ddl_script.sql file. The created log tables are filled by  __**triggers**__ after the __**update and delete**__  operation in the records of  user, product, product types and settings tables. You can find triggers in the bitirme_dml_script.sql file.
   
@@ -110,8 +114,15 @@
 
   __**Note: You can find the generated and downloaded pdf file under the default D:\jasper_reports\ folder. The folder given in this file path will be created automatically by the service. To update the file path, you can update the savedDirectoryPath value in the settings using the service.**__
   
+     > Template of Report
+   ![image](https://github.com/165-Softtech-Patika-Java-Spring/bitirmeprojesi-batuhanbay/blob/main/readme%20resources/Report%20Template.jpg?raw=true)
+   
+     > Example of Generated Pdf By Service
+   ![image](https://github.com/165-Softtech-Patika-Java-Spring/bitirmeprojesi-batuhanbay/blob/main/readme%20resources/Example%20Generated%20Pdf.jpg?raw=true)
+  
 * Swagger used for Open API Specification.
 
+![image](https://github.com/165-Softtech-Patika-Java-Spring/bitirmeprojesi-batuhanbay/blob/main/readme%20resources/Swagger.jpg?raw=true)
 
 
 
